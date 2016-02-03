@@ -32,34 +32,9 @@ Brickbreaker.Game.prototype = {
     
     create: function() {
         
-   /* var scope = {
-   // version: require('./data/version.json.js'),
-    setup: {
-        ballSize: 15,
-        initSpeed: 4,
-        palletSpeed: 4,
-        speed: {
-            x: 250,
-            y: 150
-        },
-        outBorder: 10,
-        offset: 15,
-        palletSize: {
-            width: 80,
-            height: 10
-        }
-    },
-    options: {
-        width: 700,
-        height: 500
-    },
-    /*settings: {
-        score: 0,
-        muted: false
-    },
-    };*/
+   
         
-        //this.game.physics.arcade.checkCollision.down = false;
+        this.game.physics.arcade.checkCollision.down = false;
 
         
         //background sprite
@@ -78,54 +53,19 @@ Brickbreaker.Game.prototype = {
     
         
         // Create Ball
-        //this.ballGr = this.game.add.graphics(0, 0);
-        //this.colors = [0xFF00FF, 0x000FFF, 0xFFFFFF];
-
-        
-        //this.ballGr.beginFill(this.colors[Math.floor(Math.random()*this.colors.length)]);
-        //this.ballGr.drawCircle(0, 0, scope.setup.ballSize);
-        
-        //this.ball = scope.ball = this.game.add.sprite(this.game.world.centerX, this.player.y - 16, this.ballGr.generateTexture());
+      
         this.ball = this.game.add.sprite(this.game.world.centerX, this.player.y - 16, 'ball');
-
         this.ball.anchor.set(0.5);
-        //graphics.destory();
         this.game.physics.arcade.enable(this.ball);
-
-        //this.ball.body.velocity.x = 250;
-        //this.ball.body.velocity.y = 150;
         this.ball.body.bounce.setTo(1);
         this.ball.body.collideWorldBounds = true;
         this.ballOnPlayer = true;
         
     
-        
-        
-       
-
-    
-
-       /* this.bricks = this.game.add.group();
-        this.bricks.enableBody = true;
-        
-        for (var i = 1; i < 7; i++) {
-            this.blueBrick = this.bricks.create(i *90, 75, 'blueBrick');
-            this.blueBrick.body.gravity.y = 0;
-            this.blueBrick.body.immovable = true;
-            this.redBrick = this.bricks.create(i *90, 50, 'redBrick');
-            this.redBrick.body.gravity.y = 0;
-            this.redBrick.body.immovable = true;
-            this.thirdLayerBrick = this.bricks.create(i *90, 100, 'pinkBrick');
-            this.thirdLayerBrick.body.gravity.y = 0;
-            this.thirdLayerBrick.body.immovable = true;
-            this.fourthLayerBrick = this.bricks.create(i *90, 125, 'greenBrick');
-            this.fourthLayerBrick.body.gravity.y = 0;
-            this.fourthLayerBrick.body.immovable = true;
-        }*/
         this.bricks = this.game.add.group();
         //blueBrick Test
-          this.blueBricks = this.game.add.group();
-          this.blueBricks.enableBody = true;
+        this.blueBricks = this.game.add.group();
+        this.blueBricks.enableBody = true;
         
             for (var i =1; i <7; i++)
             {
@@ -179,7 +119,7 @@ Brickbreaker.Game.prototype = {
         
 
         //allow keyboard movement
-        this.cursors = this.game.input.keyboard.createCursorKeys();
+       // this.cursors = this.game.input.keyboard.createCursorKeys();
         
         //score text and tweens
         this.scoreText = this.game.add.text(16, 325, 'Score: 0', {fontSize: '32px', fill: 'white'});
@@ -200,7 +140,7 @@ Brickbreaker.Game.prototype = {
         
         //animated score test
         
-        var seed = Date.now();
+        /*var seed = Date.now();
 this.random = new Phaser.RandomDataGenerator([seed]);
  
 this.game.input.onUp.add(function(pointer){
@@ -208,7 +148,7 @@ this.game.input.onUp.add(function(pointer){
     var newScore = this.random.integerInRange(1, 30);
     this.createScoreAnimation(pointer.x, pointer.y, '+'+newScore, newScore);
  
-}, this);
+}, this);*/
         
         //bricks movement tween
         this.fourthLayerBrickTween =   this.game.add.tween(this.fourthLayer).to( { x: 125 }, 1000, Phaser.Easing.Linear.In).to({x: 15}, 1000, Phaser.Easing.Linear.In);
@@ -255,10 +195,9 @@ this.game.input.onUp.add(function(pointer){
                 this.highScoreText.content = 'HIGHSCORE: ';
             }
         
-            this.enterKey = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+            //this.enterKey = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         
-            this.onDown = null;
-            this.game.input.onDown.add(this.releaseBall);
+            this.game.input.onDown.add(this.releaseBall, this);
 
 
 
@@ -270,46 +209,43 @@ this.game.input.onUp.add(function(pointer){
     
         this.game.physics.arcade.collide(this.ball, this.player, this.ballHitPaddle, null, this);
         this.game.physics.arcade.collide(this.ball, this.player, this.particleBurst, null, this);
-        this.game.physics.arcade.collide(this.ball, this.redBricks, this.killBrickR, /*this.createScoreAnimation,*/ null, this);
+        this.game.physics.arcade.collide(this.ball, this.redBricks, this.killBrickR, null, this);
         this.game.physics.arcade.collide(this.ball, this.blueBricks, this.killBrickB, null, this);
         this.game.physics.arcade.collide(this.ball, this.thirdLayer, this.killThirdLayer, null, this);
         this.game.physics.arcade.collide(this.ball, this.fourthLayer, this.killFourthLayer, null, this);
         
         //player movement
         
-         if(this.cursors.left.isDown) {
-                
-                this.player.body.velocity.x = -200;
-            }
+       
         
-            else if (this.cursors.right.isDown) {
-                
-                this.player.body.velocity.x = 200;
-            }
-        
-            else {
-                
-                this.player.body.velocity.x = 0;
-            }
+        this.player.x = this.game.input.x;
+
+        if (this.player.x < 24)
+        {
+            this.player.x = 24;
+        }
+        else if (this.player.x > this.game.width - 24)
+        {
+            this.player.x = this.game.width - 24;
+        }
+
+        if (this.ballOnPaddle)
+        {
+            this.ball.body.x = this.player.x;
+        }
         
     
         
 
         //restart test
         
-           /*if (this.ball.y >= this.game.world.height ) {
+           if (this.ball.y >= this.game.world.height ) {
             
             this.ballLost();
-        }*/
+        }
         
   
-            /*if (this.lives === 0) {
-            //We know before this point of losing the player actually got 'some' points
-            if (this.score > localStorage.getItem("highscore")) {
-                localStorage.setItem("highscore", this.score);
-            }
-        }
-        this.highScoreText.content = 'HIGHSCORE: ' + localStorage.getItem("highscore");*/
+            
         
        //brick respawn
         
@@ -321,22 +257,19 @@ this.game.input.onUp.add(function(pointer){
       }
         
         //difficulty change
-        if(this.score >= 240) {
+        /*if(this.score > 230) {
             
-            this.changeDifficulty();
-        }
+            //this.changeDifficulty();
+            this.brickReset();
+
+        }*/
     
-        //release the ball at start of game
-    if(this.enterKey.isDown) {
-    
-        this.releaseBall();
-    }
+        
         
         //ball placement at beginning of game
-       /* if (this.ballOnPlayer)
-    {
+        if (this.ballOnPlayer) {
         this.ball.body.x = this.player.x;
-    }*/
+    }
         
         //animated score test
         if(this.scoreBuffer > 0) {
@@ -344,26 +277,12 @@ this.game.input.onUp.add(function(pointer){
             this.scoreBuffer--;
         }
         
-        /*this.player.x = this.game.input.x;
-
-            if (this.player.x < 24)
-            {
-                this.player.x = 24;
-            }
-            else if (this.player.x > this.game.width - 24)
-            {
-                this.player.x = this.game.width - 24;
-            }
-
-            if (this.ballOnPlayer)
-            {
-                this.ball.x = this.player.x;
-            }*/
+        
 
     },
     
     //score animation test
-    createScoreAnimation: function(x, y, messsage, score) {
+    /*createScoreAnimation: function(x, y, messsage, score) {
         console.log("create score anim");
       
         this.scoreFont = "16px Arial";
@@ -380,18 +299,16 @@ this.game.input.onUp.add(function(pointer){
             this.scoreTween.start();
             this.scoreBuffer += this.score;
         }, this);
-    },
+    },*/
     
-releaseBall: function(ball) {
+    releaseBall: function(ball) {
     console.log("release ball");
-    //if (this.ballOnPlayer)
-    //{
+        if (this.ballOnPlayer) {
         this.ball.body.velocity.y = -250;
         this.ball.body.velocity.x = -150;
-     //   this.ballOnPlayer = false;
+        this.ballOnPlayer = false;
 
-        
-    //}
+        }
 
 },
     
@@ -399,12 +316,12 @@ releaseBall: function(ball) {
     changeDifficulty: function() {
         //this.ball.body.velocity.x = 300;
         //this.ball.body.velocity.y = 200;
-       // this.blueBricks.body.velocity.x = 100;
+        //this.blueBricks.body.velocity.x = 100;
         this.redBricksTween.start();
         this.fourthLayerBrickTween.start();
         this.thirdLayerBrickTween.start();
         this.blueBricksTween.start();
-        this.level2 = this.game.add.text(300, 300, 'LEVEL 2!!!!', {fontSize: '32px', fill: 'white'});
+       // this.level2 = this.game.add.text(300, 300, 'LEVEL 2!!!!', {fontSize: '32px', fill: 'white'});
         
 },
     
@@ -476,6 +393,12 @@ releaseBall: function(ball) {
             this.ball.body.velocity.set(0);
             this.ball.x = this.player.x + 16;
             this.ball.y = this.player.y - 16;
+            //this.ball.reset(this.game.world.centerX, this.player.y - 16);
+            //this.ballOnPlayer = true;
+
+            this.ball.reset(this.player.body.x + 16, this.player.y - 16);
+            
+            this.player.reset(this.game.world.centerX, 375);
         
             this.redBricks.callAll('revive');
             this.blueBricks.callAll('revive');
@@ -500,13 +423,16 @@ releaseBall: function(ball) {
         this.livesText.text = 'Lives: ' + this.lives;
         
         if(this.lives === 0) {
+                
+             this.ball.kill();
             
-             if (this.score > localStorage.getItem("highscore")) {
+             this.game.state.start('GameOver');
+
+            if (this.score > localStorage.getItem("highscore")) {
                 localStorage.setItem("highscore", this.score);
             }
         this.highScoreText.content = 'HIGHSCORE: ' + localStorage.getItem("highscore");
 
-            this.game.state.start('GameOver');
             //this.gameOver();
 
         }
@@ -548,33 +474,6 @@ releaseBall: function(ball) {
     }
 
 },
-    
-     ballChangeColor: function(){
-            console.log("change color");
-        this.ball.tint = _.sample(this.colors);
-
-    
-},
-    
-    gameOver: function(){
-                       
-       // this.highScoreText.text = 'HIGHSCORE: ' + localStorage.getItem("highscore");
-        //this.ball.velocity.setTo(0, 0);
-        //this.game.add.text(300, 300, 'GameOver!');
-       /* if (this.score > localStorage.getItem("highscore")) {
-                localStorage.setItem("highscore", this.score);
-            }
-        }
-        this.highScoreText.content = 'HIGHSCORE: ' + localStorage.getItem("highscore");*/
-
-            this.ball.kill();
-
-      // this.ball.body.velocity.x = 0;
-       //this.ball.body.velocity.y = 0;
-       this.gameOver = this.game.add.text(250, 250, 'Game Over!', {fontSize: '32px', fill: 'white'});
-        
-    },
-
      
 
 

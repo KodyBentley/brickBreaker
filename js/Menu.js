@@ -58,7 +58,7 @@ Brickbreaker.Menu.prototype = {
         this.mainMenuLogo.body.bounce.setTo(1);
         this.mainMenuLogo.body.immovable = true;
         
-        var enter = this.game.add.text(305, 350, 'START', {fontSize: '32px', fill: 'white'});
+        var enter = this.game.add.text(305, 350, 'CLICK HERE!', {fontSize: '32px', fill: 'white'});
         
         this.game.add.tween(this.mainMenuLogo).to({
                     y:50
@@ -89,9 +89,9 @@ Brickbreaker.Menu.prototype = {
         
        // this.onDown = null;
         
-        this.enterKey = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+       // this.enterKey = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         //this.state.start('Game');
-       // this.game.input.onDown.add(this.startGame, null, this);
+        this.game.input.onDown.add(this.startGame, this);
          
         
     },
@@ -99,13 +99,17 @@ Brickbreaker.Menu.prototype = {
     update: function(){
         
     
-        if(this.enterKey.isDown) {
+        /*if(this.enterKey.isDown) {
                     
             this.state.start('Game');
-        }
+        }*/
        
     
 },
+    
+    startGame: function() {
+        this.state.start('Game');
+    },
     
 
     
