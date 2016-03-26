@@ -1,4 +1,4 @@
-var Brickbreaker = Brickbreaker ||{}; 
+var Brickbreaker = Brickbreaker || {};
 
 Brickbreaker.game = new Phaser.Game(746, 420, Phaser.AUTO, '');
 
@@ -13,4 +13,3 @@ Brickbreaker.game.state.add('Game', Brickbreaker.Game);
 Brickbreaker.game.state.add('GameOver', Brickbreaker.GameOver);
 
 Brickbreaker.game.state.start('Boot');
-
